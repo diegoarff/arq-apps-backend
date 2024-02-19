@@ -1,6 +1,7 @@
 import { Subject } from '../models/index.js';
 import ApiError from '../utils/ApiError.js';
 import httpStatus from 'http-status';
+import httpMessages from '../utils/httpMessages.js';
 
 const getSubjectById = async (subjectId) => {
 	return await Subject.findById(subjectId);
@@ -28,7 +29,7 @@ const getSubjects = async () => {
 const deleteSubjectById = async (subjectId) => {
 	const subject = await getSubjectById(subjectId);
 	if (!subject) {
-		throw new ApiError('Subject not found', httpStatus.NOT_FOUND);
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 	await subject.deleteOne();
 	return subject;
@@ -37,7 +38,7 @@ const deleteSubjectById = async (subjectId) => {
 const updateSubjectById = async (subjectId, updateBody) => {
 	const subject = await getSubjectById(subjectId);
 	if (!subject) {
-		throw new ApiError('Subject not found', httpStatus.NOT_FOUND);
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 	Object.assign(subject, updateBody);
 	await subject.save();

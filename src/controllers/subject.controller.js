@@ -27,7 +27,7 @@ const getSubjectById = catchAsync(async (req, res) => {
 	const subject = await subjectService.getSubjectById(req.params.id);
 
 	if (!subject) {
-		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 
 	ApiResponse(res, {

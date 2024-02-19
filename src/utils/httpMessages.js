@@ -5,6 +5,7 @@ const httpMessages = {
 	DELETE: 'Data successfully deleted.',
 	LOGIN: 'User logged in.',
 	REGISTER: 'User registered.',
+	NOT_FOUND: 'Resource not found',
 };
 
 export default httpMessages;

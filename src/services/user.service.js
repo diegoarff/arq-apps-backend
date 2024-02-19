@@ -1,6 +1,7 @@
 import httpStatus from 'http-status';
 import User from '../models/user.model.js';
 import ApiError from '../utils/ApiError.js';
+import httpMessages from '../utils/httpMessages.js';
 
 const getUserById = async (userId) => {
 	return await User.findById(userId);
@@ -34,7 +35,7 @@ const queryUsers = async (filter, options) => {
 const deleteUserById = async (userId) => {
 	const user = await getUserById(userId);
 	if (!user) {
-		throw new ApiError('User not found', httpStatus.NOT_FOUND);
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 	await user.deleteOne();
 	return user;
