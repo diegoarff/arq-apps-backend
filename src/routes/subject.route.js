@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { validate } from '../middlewares/index.js';
-import { subjectSchema } from '../validations/index.js';
+import { subjectSchema, updateSubjectSchema } from '../validations/index.js';
 import { subjectController } from '../controllers/index.js';
 
 const router = Router();
@@ -13,7 +13,7 @@ router
 router
 	.route('/:id')
 	.get(subjectController.getSubjectById)
-	.put(validate(subjectSchema), subjectController.updateSubjectById)
+	.put(validate(updateSubjectSchema), subjectController.updateSubjectById)
 	.delete(subjectController.deleteSubjectById);
 
 export default router;

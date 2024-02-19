@@ -17,3 +17,5 @@ export const subjectSchema = z.object({
 		.gt(0, 'Term must be greater than 0')
 		.lte(12, 'Term must be less than or equal to 12'),
 });
+
+export const updateSubjectSchema = subjectSchema.partial();

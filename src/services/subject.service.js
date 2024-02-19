@@ -30,7 +30,7 @@ const deleteSubjectById = async (subjectId) => {
 	if (!subject) {
 		throw new ApiError('Subject not found', httpStatus.NOT_FOUND);
 	}
-	await subject.remove();
+	await subject.deleteOne();
 	return subject;
 };
 
