@@ -7,11 +7,7 @@ const getUserById = async (userId) => {
 };
 
 const getUserByUsername = async (username) => {
-	const user = await User.findOne({ username });
-	if (user) {
-		return true;
-	}
-	return false;
+	return await User.findOne({ username });
 };
 
 const createUser = async (userBody) => {
@@ -48,6 +44,7 @@ const userService = {
 	createUser,
 	queryUsers,
 	getUserById,
+	getUserByUsername,
 	deleteUserById,
 };
 

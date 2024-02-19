@@ -6,20 +6,25 @@ import { ZodError } from 'zod';
 
 export const errorHandler = (err, req, res, next) => {
 	if (err instanceof ZodError) {
-		ApiResponse(res, {
+		return ApiResponse(res, {
 			code: httpStatus.BAD_REQUEST,
 			message: 'Validation Error.',
 		});
 	}
 
-	if (err instanceof mongoose.Error)
-		ApiResponse(res, { code: httpStatus.BAD_REQUEST, message: 'Bad request.' });
+	if (err instanceof mongoose.Error) {
+		return ApiResponse(res, {
+			code: httpStatus.BAD_REQUEST,
+			message: 'Bad request.',
+		});
+	}
 
-	if (err instanceof ApiError)
-		ApiResponse(res, { code: err.statusCode, message: err.message });
+	if (err instanceof ApiError) {
+		return ApiResponse(res, { code: err.statusCode, message: err.message });
+	}
 
-	ApiResponse(res, {
+	return ApiResponse(res, {
 		code: httpStatus.INTERNAL_SERVER_ERROR,
-		message: 'Internal Server Error.',
+		message: `Internal Server Error: ${err.message}`,
 	});
 };

@@ -18,7 +18,7 @@ const login = catchAsync(async (req, res) => {
 	const user = await authService.login(username, password);
 	const token = user.createToken();
 	ApiResponse(res, {
-		data: { token, user },
+		data: { token, user: user.toJSON() },
 		message: httpMessages.LOGIN,
 		code: httpStatus.OK,
 	});

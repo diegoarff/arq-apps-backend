@@ -2,6 +2,7 @@ import 'dotenv/config.js';
 import { Schema, model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { toJSON } from './plugins/index.js';
 
 const userSchema = new Schema(
 	{
@@ -14,6 +15,7 @@ const userSchema = new Schema(
 		password: {
 			type: String,
 			required: true,
+			private: true,
 		},
 		role: {
 			type: Schema.Types.ObjectId,
@@ -25,6 +27,8 @@ const userSchema = new Schema(
 		versionKey: false,
 	}
 );
+
+userSchema.plugin(toJSON);
 
 userSchema.pre('save', async function (next) {
 	if (!this.isModified('password')) {
@@ -41,7 +45,7 @@ userSchema.methods.comparePassword = async function (password) {
 
 userSchema.methods.createToken = function () {
 	return jwt.sign(
-		{ id: this._id, username: this.username },
+		{ id: this._id, username: this.username, role: this.role },
 		process.env.JWT_SECRET || 'secret'
 	);
 };

@@ -3,7 +3,7 @@ import ApiError from '../utils/ApiError.js';
 import { userService } from '../services/index.js';
 
 const login = async (username, password) => {
-	const user = userService.getUserByUsername(username);
+	const user = await userService.getUserByUsername(username);
 	if (!user && user.comparePassword(password))
 		throw new ApiError(
 			'Username or password incorrect',
@@ -13,7 +13,7 @@ const login = async (username, password) => {
 };
 
 const changePassword = async (userId, password) => {
-	const user = userService.getUserById(userId);
+	const user = await userService.getUserById(userId);
 	if (!user) {
 		throw new ApiError('Username not found', httpStatus.NOT_FOUND);
 	}
