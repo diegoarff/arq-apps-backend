@@ -1,6 +1,6 @@
 const allRoles = {
-    user: [],
-    superuser: []
+	user: [],
+	superuser: [],
 };
 
-export default allRoles
+export default allRoles;

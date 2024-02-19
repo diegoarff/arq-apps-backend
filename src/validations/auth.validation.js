@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { username, password, role } from './generics';
+import { username, password, role } from './generics.js';
 
 export const registerSchema = z.object({
 	username,

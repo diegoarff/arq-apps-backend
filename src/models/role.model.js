@@ -1,18 +1,17 @@
-import {  Schema, model } from "mongoose";
-
+import { Schema, model } from 'mongoose';
 
 const roleSchema = new Schema(
-    {
-        descrip: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-    },
-    {
-        timestamps: true,
-        versionKey: false,
-    }
+	{
+		descrip: {
+			type: String,
+			required: true,
+			trim: true,
+		},
+	},
+	{
+		timestamps: true,
+		versionKey: false,
+	}
 );
 
-export default model("Role", roleSchema);
+export default model('Role', roleSchema);
