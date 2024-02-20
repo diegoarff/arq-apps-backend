@@ -7,8 +7,27 @@ import ApiError from '../utils/ApiError.js';
 
 const getSubjects = catchAsync(async (req, res) => {
 	const subjects = await subjectService.getSubjects();
+
+	// refactor subjects data structure
+	const data = {};
+	for (const subject of subjects) {
+		const name = subject.name;
+		const term = subject.term;
+
+		if (!data[term]) {
+			data[term] = { term, subjects: [] };
+		}
+		data[term].subjects.push(name);
+	}
+	const subjectsRefactored = Object.values(data);
+
+	// sort subjects names alphabetically
+	for (const sr of subjectsRefactored) {
+		sr.subjects.sort();
+	}
+
 	ApiResponse(res, {
-		data: subjects,
+		data: subjectsRefactored,
 		message: httpMessages.FETCH,
 		code: httpStatus.OK,
 	});
