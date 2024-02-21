@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { validate } from '../middlewares/index.js';
+import { validate, auth } from '../middlewares/index.js';
 import { subjectSchema, updateSubjectSchema } from '../validations/index.js';
 import { subjectController } from '../controllers/index.js';
 
 const router = Router();
+
+router.use(auth());
 
 router
 	.route('/')
