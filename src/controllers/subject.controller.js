@@ -28,7 +28,7 @@ const getSubjects = catchAsync(async (req, res) => {
 
 	// sort subjects names alphabetically
 	for (const sr of subjectsRefactored) {
-		sr.subjects.sort();
+		sr.subjects.sort((a, b) => a.name.localeCompare(b.name));
 	}
 
 	ApiResponse(res, {
