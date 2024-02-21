@@ -11,13 +11,18 @@ const getSubjects = catchAsync(async (req, res) => {
 	// refactor subjects data structure
 	const data = {};
 	for (const subject of subjects) {
-		const name = subject.name;
 		const term = subject.term;
+
+		const s = {
+			name: subject.name,
+			term: subject.term,
+			id: subject._id,
+		};
 
 		if (!data[term]) {
 			data[term] = { term, subjects: [] };
 		}
-		data[term].subjects.push(name);
+		data[term].subjects.push(s);
 	}
 	const subjectsRefactored = Object.values(data);
 

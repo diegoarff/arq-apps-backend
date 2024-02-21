@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import authRoutes from './auth.route.js';
 import subjectRoutes from './subject.route.js';
+import postRoutes from './post.route.js';
 
 const router = Router();
 const defaultRoutes = [
@@ -11,6 +12,10 @@ const defaultRoutes = [
 	{
 		path: '/subject',
 		route: subjectRoutes,
+	},
+	{
+		path: '/post',
+		route: postRoutes,
 	},
 ];
 
