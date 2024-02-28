@@ -15,8 +15,10 @@ export const postSchema = z.object({
 		})
 		.max(2000, 'Description must be at most 2000 characters long')
 		.min(1, 'Description must be at least 1 characters long'),
-	subject: z.string({
-		required_error: 'Subject ID is required',
-		invalid_type_error: 'Subject ID must be a string',
-	}),
+	subject: z
+		.string({
+			required_error: 'Subject ID is required',
+			invalid_type_error: 'Subject ID must be a string',
+		})
+		.optional(),
 });

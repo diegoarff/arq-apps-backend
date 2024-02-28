@@ -20,7 +20,7 @@ const getPosts = async () => {
 	return await Post.find();
 };
 
-const getPostBySubject = async (subjectId) => {
+const getSubjectPosts = async (subjectId) => {
 	return await Post.find({ subject: subjectId })
 		.populate('user')
 		.sort({ createdAt: -1 });
@@ -29,7 +29,7 @@ const getPostBySubject = async (subjectId) => {
 const postService = {
 	createPost,
 	getPosts,
-	getPostBySubject,
+	getSubjectPosts,
 };
 
 export default postService;

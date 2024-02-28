@@ -36,23 +36,9 @@ const getPosts = catchAsync(async (req, res) => {
 	});
 });
 
-const getPostBySubject = catchAsync(async (req, res) => {
-	const posts = await postService.getPostBySubject(req.params.subject_id);
-	if (!posts) {
-		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
-	}
-
-	ApiResponse(res, {
-		data: posts,
-		message: httpMessages.FETCH,
-		code: httpStatus.OK,
-	});
-});
-
 const postController = {
 	createPost,
 	getPosts,
-	getPostBySubject,
 };
 
 export default postController;

@@ -1,4 +1,4 @@
-import { subjectService } from '../services/index.js';
+import { subjectService, postService } from '../services/index.js';
 import catchAsync from '../utils/catchAsync.js';
 import httpStatus from 'http-status';
 import httpMessages from '../utils/httpMessages.js';
@@ -90,6 +90,38 @@ const updateSubjectById = catchAsync(async (req, res) => {
 	});
 });
 
+const createPost = catchAsync(async (req, res) => {
+	const userId = req.user._id;
+	const subjectId = req.params.subjectId;
+
+	const body = {
+		...req.body,
+		subject: subjectId,
+		user: userId,
+	};
+
+	const post = await postService.createPost(body);
+
+	ApiResponse(res, {
+		data: post,
+		message: httpMessages.CREATE,
+		code: httpStatus.OK,
+	});
+});
+
+const getSubjectPosts = catchAsync(async (req, res) => {
+	const posts = await postService.getSubjectPosts(req.params.subjectId);
+	if (!posts) {
+		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
+	}
+
+	ApiResponse(res, {
+		data: posts,
+		message: httpMessages.FETCH,
+		code: httpStatus.OK,
+	});
+});
+
 const subjectController = {
 	getSubjects,
 	createSubject,
@@ -97,6 +129,8 @@ const subjectController = {
 	getSubjectByName,
 	deleteSubjectById,
 	updateSubjectById,
+	createPost,
+	getSubjectPosts,
 };
 
 export default subjectController;

@@ -10,11 +10,11 @@ const defaultRoutes = [
 		route: authRoutes,
 	},
 	{
-		path: '/subject',
+		path: '/subjects',
 		route: subjectRoutes,
 	},
 	{
-		path: '/post',
+		path: '/posts',
 		route: postRoutes,
 	},
 ];
