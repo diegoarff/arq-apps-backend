@@ -1,4 +1,4 @@
-import { postService } from '../services/index.js';
+import { commentService, postService } from '../services/index.js';
 import catchAsync from '../utils/catchAsync.js';
 import httpStatus from 'http-status';
 import httpMessages from '../utils/httpMessages.js';
@@ -36,9 +36,40 @@ const getPosts = catchAsync(async (req, res) => {
 	});
 });
 
+const getPostComments = catchAsync(async (req, res) => {
+	const comments = await commentService.getPostComments(req.params.postId);
+	if (!comments) {
+		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
+	}
+
+	ApiResponse(res, {
+		data: comments,
+		message: httpMessages.FETCH,
+		code: httpStatus.OK,
+	});
+});
+
+const createComment = catchAsync(async (req, res) => {
+	const body = {
+		...req.body,
+		user: req.user._id,
+		post: req.params.postId,
+	};
+
+	const comment = await commentService.createComment(body);
+
+	ApiResponse(res, {
+		data: comment,
+		message: httpMessages.CREATE,
+		code: httpStatus.OK,
+	});
+});
+
 const postController = {
 	createPost,
 	getPosts,
+	getPostComments,
+	createComment,
 };
 
 export default postController;
