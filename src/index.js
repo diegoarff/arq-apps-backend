@@ -1,24 +1,22 @@
 import 'dotenv/config.js';
-import { createServer } from 'http';
-import app from './app.js';
-import mongoose from 'mongoose';
-const port = process.env.PORT || 3000;
+import { Worker } from 'node:worker_threads';
+import * as url from 'url';
+import path from 'path';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-const httpsServer = createServer(app);
+const authPath = path.join(__dirname, 'authWorker.js');
+const mainPath = path.join(__dirname, 'mainWorker.js');
 
-const connection = async () => {
-	try {
-		console.log('Connecting to MongoDB...');
-		const conn = await mongoose.connect(process.env.MONGODB_URI);
-		console.log(`MongoDB Connected: ${conn.connection.host}`);
-	} catch (error) {
-		console.log(error);
-		process.exit(1);
+const main = new Worker(mainPath);
+
+main.on('message', (msg) => {
+	if (msg === 'crash') {
+		main.terminate().then(() => {
+			console.log('main worker crashed');
+		});
 	}
-};
-
-connection().then(() => {
-	httpsServer.listen(port, () => {
-		console.log(`Server running on http://localhost:${port}`);
-	});
 });
+
+main.postMessage(8000);
+const auth = new Worker(authPath);
+auth.postMessage(8001);
