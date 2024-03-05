@@ -1,7 +1,7 @@
 import { parentPort } from 'worker_threads';
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/index.js';
-import app from './app.js';
+import app from './config/app.js';
 import passport from 'passport';
 import jwtStrategy from './config/passport.js';
 import { createServer } from 'http';

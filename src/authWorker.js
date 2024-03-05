@@ -1,7 +1,7 @@
 import { parentPort } from 'worker_threads';
 import authRoutes from './routes/auth.route.js';
 import { errorHandler } from './middlewares/index.js';
-import app from './app.js';
+import app from './config/app.js';
 import { createServer } from 'http';
 import connection from './config/mongoose.js';
 
