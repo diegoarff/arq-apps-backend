@@ -9,12 +9,16 @@ import {
 } from '../validations/index.js';
 const router = Router();
 
-router.use(auth());
-
 router
 	.route('/')
 	.get(universityController.getAllUniversities)
-	.post(validate(universitySchema), universityController.createUniversity);
+	.post(
+		auth(),
+		validate(universitySchema),
+		universityController.createUniversity
+	);
+
+router.use(auth());
 
 router
 	.route('/:id')

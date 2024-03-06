@@ -47,7 +47,7 @@ const updateSubjectById = async (subjectId, updateBody) => {
 };
 
 const getSubjectsByUniversity = async (universityId) => {
-	return Subject.find().populate('university').sort({ university: 'asc' });
+	return Subject.find({ university: universityId });
 };
 
 const subjectService = {

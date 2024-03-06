@@ -10,7 +10,9 @@ import httpMessages from '../utils/httpMessages.js';
 import httpStatus from 'http-status';
 
 const getSubjectsByUniversity = catchAsync(async (req, res, next) => {
-	const subjects = await subjectService.getSubjectsByUniversity(req.params.id);
+	const subjects = await subjectService.getSubjectsByUniversity(
+		req.params.universityId
+	);
 
 	// refactor subjects data structure
 	const data = {};
