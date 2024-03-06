@@ -24,3 +24,8 @@ export const role = z.string({
 	required_error: 'Role is required',
 	invalid_type_error: 'Role must be a string',
 });
+
+export const university = z.string({
+	required_error: 'University is required',
+	invalid_type_error: 'University must be a string',
+});

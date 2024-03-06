@@ -1,4 +1,14 @@
 import authController from './auth.controller.js';
 import subjectController from './subject.controller.js';
 import postController from './post.controller.js';
-export { authController, subjectController, postController };
+import universityController from './university.controller.js';
+import teacherController from './teacher.controller.js';
+import ratingController from './rating.controller.js';
+export {
+	authController,
+	subjectController,
+	postController,
+	universityController,
+	teacherController,
+	ratingController,
+};

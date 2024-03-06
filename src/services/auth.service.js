@@ -4,12 +4,11 @@ import { userService } from '../services/index.js';
 
 const login = async (username, password) => {
 	const user = await userService.getUserByUsername(username);
-	if (!user && user.comparePassword(password))
-		throw new ApiError(
-			'Username or password incorrect',
-			httpStatus.UNAUTHORIZED
-		);
-	return user;
+	if (!user)
+		throw new ApiError('Username does not exist.', httpStatus.UNAUTHORIZED);
+	if (!user.comparePassword(password))
+		throw new ApiError('Password does not match.', httpStatus.UNAUTHORIZED);
+	return user.populate('role university');
 };
 
 const changePassword = async (userId, password) => {

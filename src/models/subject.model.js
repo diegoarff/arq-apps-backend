@@ -12,6 +12,16 @@ const subjectSchema = new Schema({
 		required: true,
 		trim: true,
 	},
+	university: {
+		type: Schema.Types.ObjectId,
+		ref: 'University',
+	},
+	teachers: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Teacher',
+		},
+	],
 });
 
 export default model('Subject', subjectSchema);

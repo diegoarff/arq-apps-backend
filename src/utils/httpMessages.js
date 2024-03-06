@@ -7,6 +7,7 @@ const httpMessages = {
 	REGISTER: 'User registered.',
 	NOT_FOUND: 'Resource not found',
 	CANNOT_MODIFY: 'You cannot modify data that belongs to another user.',
+	ALREADY_EXISTS: 'Resource already exists.',
 };
 
 export default httpMessages;

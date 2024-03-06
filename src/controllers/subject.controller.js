@@ -38,15 +38,6 @@ const getSubjects = catchAsync(async (req, res) => {
 	});
 });
 
-const createSubject = catchAsync(async (req, res) => {
-	const subject = await subjectService.createSubject(req.body);
-	ApiResponse(res, {
-		data: subject,
-		message: httpMessages.CREATE,
-		code: httpStatus.CREATED,
-	});
-});
-
 const getSubjectById = catchAsync(async (req, res) => {
 	const subject = await subjectService.getSubjectById(req.params.id);
 
@@ -122,15 +113,23 @@ const getSubjectPosts = catchAsync(async (req, res) => {
 	});
 });
 
+const getTeachersBySubject = catchAsync(async (req, res) => {
+	ApiResponse(res, {
+		data: [],
+		message: httpMessages.FETCH,
+		code: httpStatus.OK,
+	});
+});
+
 const subjectController = {
 	getSubjects,
-	createSubject,
 	getSubjectById,
 	getSubjectByName,
 	deleteSubjectById,
 	updateSubjectById,
 	createPost,
 	getSubjectPosts,
+	getTeachersBySubject,
 };
 
 export default subjectController;

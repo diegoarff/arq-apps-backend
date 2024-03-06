@@ -16,6 +16,15 @@ export const subjectSchema = z.object({
 		.int()
 		.gt(0, 'Term must be greater than 0')
 		.lte(12, 'Term must be less than or equal to 12'),
+	teachers: z
+		.array(
+			z.string({
+				required_error: 'Teacher is required',
+				invalid_type_error: 'Teacher must be a string',
+			})
+		)
+		.min(1, 'At least one teacher is required')
+		.optional(),
 });
 
 export const updateSubjectSchema = subjectSchema.partial();

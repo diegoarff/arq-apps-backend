@@ -4,7 +4,8 @@ import httpStatus from 'http-status';
 import httpMessages from '../utils/httpMessages.js';
 
 const getSubjectById = async (subjectId) => {
-	return await Subject.findById(subjectId);
+	return await Subject.findById(subjectId).populate('teachers');
+	// TODO: add rating average
 };
 
 const getSubjectBySubjectname = async (name) => {
@@ -45,12 +46,17 @@ const updateSubjectById = async (subjectId, updateBody) => {
 	return subject;
 };
 
+const getSubjectsByUniversity = async (universityId) => {
+	return Subject.find().populate('university').sort({ university: 'asc' });
+};
+
 const subjectService = {
 	updateSubjectById,
 	createSubject,
 	getSubjects,
 	getSubjectById,
 	deleteSubjectById,
+	getSubjectsByUniversity,
 };
 
 export default subjectService;

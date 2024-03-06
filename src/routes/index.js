@@ -3,6 +3,9 @@ import authRoutes from './auth.route.js';
 import subjectRoutes from './subject.route.js';
 import postRoutes from './post.route.js';
 import commentRoutes from './comment.route.js';
+import universityRoutes from './university.route.js';
+import teacherRoutes from './teacher.route.js';
+import ratingRoutes from './rating.route.js';
 
 const router = Router();
 const defaultRoutes = [
@@ -21,6 +24,18 @@ const defaultRoutes = [
 	{
 		path: '/comments',
 		route: commentRoutes,
+	},
+	{
+		path: '/universities',
+		route: universityRoutes,
+	},
+	{
+		path: '/teachers',
+		route: teacherRoutes,
+	},
+	{
+		path: '/ratings',
+		route: ratingRoutes,
 	},
 ];
 
