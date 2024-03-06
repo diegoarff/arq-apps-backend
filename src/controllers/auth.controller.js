@@ -5,9 +5,12 @@ import httpMessages from '../utils/httpMessages.js';
 import ApiResponse from '../utils/ApiResponse.js';
 
 const register = catchAsync(async (req, res) => {
-	const user = await userService.createUser(req.body);
+	await userService.createUser(req.body);
+	const { username, password } = req.body;
+	const user = await authService.login(username, password);
+	const token = user.createToken();
 	ApiResponse(res, {
-		data: user,
+		data: { token, user: user.toJSON() },
 		message: httpMessages.REGISTER,
 		code: httpStatus.CREATED,
 	});
