@@ -11,8 +11,32 @@ import httpStatus from 'http-status';
 
 const getSubjectsByUniversity = catchAsync(async (req, res, next) => {
 	const subjects = await subjectService.getSubjectsByUniversity(req.params.id);
+
+	// refactor subjects data structure
+	const data = {};
+	for (const subject of subjects) {
+		const term = subject.term;
+
+		const s = {
+			name: subject.name,
+			term: subject.term,
+			id: subject._id,
+		};
+
+		if (!data[term]) {
+			data[term] = { term, subjects: [] };
+		}
+		data[term].subjects.push(s);
+	}
+	const subjectsRefactored = Object.values(data);
+
+	// sort subjects names alphabetically
+	for (const sr of subjectsRefactored) {
+		sr.subjects.sort((a, b) => a.name.localeCompare(b.name));
+	}
+
 	ApiResponse(res, {
-		data: subjects,
+		data: subjectsRefactored,
 		message: httpMessages.FETCH,
 		code: httpStatus.OK,
 	});
