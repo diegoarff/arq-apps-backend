@@ -11,7 +11,7 @@ const getTeacherById = catchAsync(async (req, res, next) => {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 	ApiResponse(res, {
-		data: {},
+		data: teacher,
 		message: httpMessages.FETCH,
 		code: httpStatus.OK,
 	});
@@ -21,16 +21,16 @@ const updateTeacher = catchAsync(async (req, res, next) => {
 	const teacher = await teacherService.updateTeacher(req.params.id, req.body);
 	ApiResponse(res, {
 		data: teacher,
-		message: httpMessages.FETCH,
-		code: httpStatus.UPDATE,
+		message: httpMessages.UPDATE,
+		code: httpStatus.OK,
 	});
 });
 
 const deleteTeacher = catchAsync(async (req, res, next) => {
 	await teacherService.deleteTeacher(req.params.id);
 	ApiResponse(res, {
-		message: httpMessages.FETCH,
-		code: httpStatus.DELETE,
+		message: httpMessages.DELETE,
+		code: httpStatus.OK,
 	});
 });
 

@@ -22,3 +22,5 @@ export const postSchema = z.object({
 		})
 		.optional(),
 });
+
+export const updatePostSchema = postSchema.partial();

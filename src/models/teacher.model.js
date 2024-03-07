@@ -30,14 +30,12 @@ const teacherSchema = new Schema(
 
 teacherSchema.plugin(toJSON);
 
-teacherSchema.methods.isEmailTaken = async function (email) {
-	const teacher = await this.constructor.findOne({ email });
-	return !!teacher;
+teacherSchema.statics.isEmailTaken = function (email) {
+	return this.findOne({ email });
 };
 
-teacherSchema.methods.isNumberTaken = async function (number) {
-	const teacher = await this.constructor.findOne({ number });
-	return !!teacher;
+teacherSchema.statics.isNumberTaken = function (number) {
+	return this.findOne({ number });
 };
 
 export default model('Teacher', teacherSchema);

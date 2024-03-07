@@ -1,4 +1,7 @@
 import { Post } from '../models/index.js';
+import httpMessages from '../utils/httpMessages.js';
+import httpStatus from 'http-status';
+import ApiError from '../utils/ApiError.js';
 // import ApiError from '../utils/ApiError.js';
 // import httpStatus from 'http-status';
 
@@ -26,10 +29,35 @@ const getSubjectPosts = async (subjectId) => {
 		.sort({ createdAt: -1 });
 };
 
+const getPostById = async (postId) => {
+	return await Post.findById(postId);
+};
+
+const updatePost = async (postId, postBody) => {
+	const post = await getPostById(postId);
+	if (!post) {
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+	}
+	Object.assign(post, postBody);
+	await post.save();
+	return post;
+};
+
+const deletePost = async (postId) => {
+	const post = await getPostById(postId);
+	if (!post) {
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+	}
+	await post.deleteOne();
+};
+
 const postService = {
 	createPost,
 	getPosts,
 	getSubjectPosts,
+	getPostById,
+	deletePost,
+	updatePost,
 };
 
 export default postService;

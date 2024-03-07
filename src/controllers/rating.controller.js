@@ -15,7 +15,7 @@ import httpMessages from '../utils/httpMessages.js';
 }) */
 
 const createRating = catchAsync(async (req, res, next) => {
-	const rating = await ratingService.createRating();
+	const rating = await ratingService.createRating(req.body);
 	ApiResponse(res, {
 		data: rating,
 		message: httpMessages.CREATE,
@@ -24,17 +24,20 @@ const createRating = catchAsync(async (req, res, next) => {
 });
 
 const updateRating = catchAsync(async (req, res, next) => {
+	const rating = await ratingService.updateRating(req.params.id, req.body);
 	ApiResponse(res, {
-		data: {},
-		message: httpMessages.FETCH,
-		code: httpStatus.UPDATE,
+		data: rating,
+		message: httpMessages.UPDATE,
+		code: httpStatus.OK,
 	});
 });
 
 const deleteRating = catchAsync(async (req, res, next) => {
+	const rating = await ratingService.deleteRating(req.params.id);
 	ApiResponse(res, {
-		message: httpMessages.FETCH,
-		code: httpStatus.DELETE,
+		data: rating,
+		message: httpMessages.DELETE,
+		code: httpStatus.OK,
 	});
 });
 

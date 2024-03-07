@@ -17,6 +17,8 @@ const getSubjects = catchAsync(async (req, res) => {
 			name: subject.name,
 			term: subject.term,
 			id: subject._id,
+			teachers: subject.teachers,
+			university: subject.university,
 		};
 
 		if (!data[term]) {
@@ -83,11 +85,11 @@ const updateSubjectById = catchAsync(async (req, res) => {
 
 const createPost = catchAsync(async (req, res) => {
 	const userId = req.user._id;
-	const subjectId = req.params.subjectId;
+	const id = req.params.id;
 
 	const body = {
 		...req.body,
-		subject: subjectId,
+		subject: id,
 		user: userId,
 	};
 
@@ -101,7 +103,7 @@ const createPost = catchAsync(async (req, res) => {
 });
 
 const getSubjectPosts = catchAsync(async (req, res) => {
-	const posts = await postService.getSubjectPosts(req.params.subjectId);
+	const posts = await postService.getSubjectPosts(req.params.id);
 	if (!posts) {
 		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
 	}
@@ -113,10 +115,15 @@ const getSubjectPosts = catchAsync(async (req, res) => {
 	});
 });
 
-const getTeachersBySubject = catchAsync(async (req, res) => {
+const addTeacherToSubject = catchAsync(async (req, res) => {
+	const addTo = await subjectService.addTeacherToSubject(
+		req.params.id,
+		req.params.teacherId
+	);
+
 	ApiResponse(res, {
-		data: [],
-		message: httpMessages.FETCH,
+		data: addTo,
+		message: httpMessages.UPDATE,
 		code: httpStatus.OK,
 	});
 });
@@ -129,7 +136,7 @@ const subjectController = {
 	updateSubjectById,
 	createPost,
 	getSubjectPosts,
-	getTeachersBySubject,
+	addTeacherToSubject,
 };
 
 export default subjectController;

@@ -27,8 +27,8 @@ const updateUniversity = async (universityId, updateBody) => {
 	if (!university) {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
-	if (updateBody.name && university.name === updateBody.name) {
-		throw new ApiError(httpMessages.ALREADY_EXISTS, httpStatus.BAD_REQUEST);
+	if (university.name === updateBody.name) {
+		throw new ApiError('Name already taken.', httpStatus.BAD_REQUEST);
 	}
 	Object.assign(university, updateBody);
 	await university.save();
@@ -40,7 +40,7 @@ const deleteUniversity = async (universityId) => {
 	if (!university) {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
-	await university.remove();
+	await university.deleteOne();
 	return university;
 };
 

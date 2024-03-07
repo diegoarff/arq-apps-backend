@@ -14,19 +14,11 @@ const createTeacher = async (teacherBody) => {
         number: "+584123456789",
         university: "5f2b8e2c3e4c3d1f2e4c3d1f"
     */
+	if (await Teacher.isEmailTaken(teacherBody.email))
+		throw new ApiError('Email already taken.', httpStatus.BAD_REQUEST);
 
-	if (
-		!teacherBody.university ||
-		!teacherBody.name ||
-		!teacherBody.email ||
-		!teacherBody.number
-	) {
-		throw new ApiError('Missing required fields', httpStatus.BAD_REQUEST);
-	} else if (await Teacher.isEmailTaken(teacherBody.email)) {
-		throw new ApiError('Email already taken', httpStatus.BAD_REQUEST);
-	} else if (await Teacher.isNumberTaken(teacherBody.number)) {
-		throw new ApiError('Number already taken', httpStatus.BAD_REQUEST);
-	}
+	if (await Teacher.isNumberTaken(teacherBody.number))
+		throw new ApiError('Number already taken.', httpStatus.BAD_REQUEST);
 
 	// yamete kudasai onii-chan (⁄ ⁄•⁄ω⁄•⁄ ⁄)
 	return Teacher.create(teacherBody);
@@ -51,7 +43,7 @@ const deleteTeacher = async (teacherId) => {
 	if (!teacher) {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
-	await teacher.remove();
+	await teacher.deleteOne();
 	return teacher;
 };
 

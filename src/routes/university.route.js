@@ -27,12 +27,12 @@ router
 	.delete(universityController.deleteUniversity);
 
 router
-	.route('/:universityId/teachers')
+	.route('/:id/teachers')
 	.get(universityController.getTeachersByUniversity)
 	.post(validate(teacherSchema), universityController.createTeacher);
 
 router
-	.route('/:universityId/subjects')
+	.route('/:id/subjects')
 	.get(universityController.getSubjectsByUniversity)
 	.post(validate(subjectSchema), universityController.createSubject);
 

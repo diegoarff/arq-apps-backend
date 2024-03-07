@@ -1,10 +1,11 @@
 import { Subject } from '../models/index.js';
+import { teacherService } from './index.js';
 import ApiError from '../utils/ApiError.js';
 import httpStatus from 'http-status';
 import httpMessages from '../utils/httpMessages.js';
 
 const getSubjectById = async (subjectId) => {
-	return await Subject.findById(subjectId).populate('teachers');
+	return await Subject.findById(subjectId).populate('teachers university');
 	// TODO: add rating average
 };
 
@@ -24,7 +25,7 @@ const createSubject = async (subjectBody) => {
 };
 
 const getSubjects = async () => {
-	return await Subject.find();
+	return await Subject.find().populate('teachers university');
 };
 
 const deleteSubjectById = async (subjectId) => {
@@ -47,7 +48,31 @@ const updateSubjectById = async (subjectId, updateBody) => {
 };
 
 const getSubjectsByUniversity = async (universityId) => {
-	return Subject.find({ university: universityId });
+	return Subject.find({ university: universityId }).populate(
+		'teachers university'
+	);
+};
+
+const addTeacherToSubject = async (subjectId, teacherId) => {
+	const subject = await getSubjectById(subjectId);
+
+	if (!subject)
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+
+	if (subject.teachers.some((teacher) => teacher.id === teacherId))
+		throw new ApiError(
+			'Subject already contains this teacher.',
+			httpStatus.BAD_REQUEST
+		);
+
+	const teacher = await teacherService.getTeacherById(teacherId);
+
+	if (!subject || !teacher)
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+
+	subject.teachers.push(teacher);
+	await subject.save();
+	return getSubjectById(subjectId);
 };
 
 const subjectService = {
@@ -57,6 +82,7 @@ const subjectService = {
 	getSubjectById,
 	deleteSubjectById,
 	getSubjectsByUniversity,
+	addTeacherToSubject,
 };
 
 export default subjectService;

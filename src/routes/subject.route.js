@@ -16,11 +16,13 @@ router
 	.delete(subjectController.deleteSubjectById);
 
 router
-	.route('/:subjectId/posts')
+	.route('/:id/posts')
 	.get(subjectController.getSubjectPosts)
 	.post(validate(postSchema), subjectController.createPost);
-
-router.get('/:id/teachers', subjectController.getTeachersBySubject);
+// me gusta la cachapa
+router
+	.route('/:id/teachers/:teacherId')
+	.put(subjectController.addTeacherToSubject);
 
 // router.route('/subject/:subject_id').get(postController.getPostBySubject);
 

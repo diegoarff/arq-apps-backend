@@ -10,9 +10,7 @@ import httpMessages from '../utils/httpMessages.js';
 import httpStatus from 'http-status';
 
 const getSubjectsByUniversity = catchAsync(async (req, res, next) => {
-	const subjects = await subjectService.getSubjectsByUniversity(
-		req.params.universityId
-	);
+	const subjects = await subjectService.getSubjectsByUniversity(req.params.id);
 
 	// refactor subjects data structure
 	const data = {};
@@ -23,6 +21,8 @@ const getSubjectsByUniversity = catchAsync(async (req, res, next) => {
 			name: subject.name,
 			term: subject.term,
 			id: subject._id,
+			teachers: subject.teachers,
+			university: subject.university,
 		};
 
 		if (!data[term]) {
@@ -90,23 +90,23 @@ const updateUniversity = catchAsync(async (req, res, next) => {
 	);
 	ApiResponse(res, {
 		data: university,
-		message: httpMessages.FETCH,
-		code: httpStatus.UPDATE,
+		message: httpMessages.UPDATE,
+		code: httpStatus.OK,
 	});
 });
 
 const deleteUniversity = catchAsync(async (req, res, next) => {
 	await universityService.deleteUniversity(req.params.id);
 	ApiResponse(res, {
-		message: httpMessages.FETCH,
-		code: httpStatus.DELETE,
+		message: httpMessages.DELETE,
+		code: httpStatus.OK,
 	});
 });
 
 const createTeacher = catchAsync(async (req, res, next) => {
 	const body = {
 		...req.body,
-		university: req.params.universityId,
+		university: req.params.id,
 	};
 	const teacher = await teacherService.createTeacher(body);
 	ApiResponse(res, {
@@ -119,7 +119,7 @@ const createTeacher = catchAsync(async (req, res, next) => {
 const createSubject = catchAsync(async (req, res) => {
 	const body = {
 		...req.body,
-		university: req.params.universityId,
+		university: req.params.id,
 	};
 	const subject = await subjectService.createSubject(body);
 	ApiResponse(res, {

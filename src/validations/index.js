@@ -1,6 +1,6 @@
 import { loginSchema, registerSchema } from './auth.validation.js';
 import { subjectSchema, updateSubjectSchema } from './subject.validation.js';
-import { postSchema } from './post.validation.js';
+import { postSchema, updatePostSchema } from './post.validation.js';
 import { commentSchema, updateCommentSchema } from './comment.validation.js';
 import {
 	universitySchema,
@@ -22,4 +22,5 @@ export {
 	updateTeacherSchema,
 	ratingSchema,
 	updateRatingSchema,
+	updatePostSchema,
 };
