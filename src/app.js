@@ -17,5 +17,6 @@ app.use(passport.initialize());
 passport.use(jwtStrategy);
 app.use('/', routes);
 app.use(errorHandler);
+app.get('/crash', (req, res) => process.exit(1));
 
 export default app;

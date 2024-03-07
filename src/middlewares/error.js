@@ -8,14 +8,14 @@ export const errorHandler = (err, req, res, next) => {
 	if (err instanceof ZodError) {
 		return ApiResponse(res, {
 			code: httpStatus.BAD_REQUEST,
-			message: 'Validation Error.',
+			message: err.message,
 		});
 	}
 
 	if (err instanceof mongoose.Error) {
 		return ApiResponse(res, {
 			code: httpStatus.BAD_REQUEST,
-			message: 'Bad request.',
+			message: err.message,
 		});
 	}
 
@@ -25,6 +25,6 @@ export const errorHandler = (err, req, res, next) => {
 
 	return ApiResponse(res, {
 		code: httpStatus.INTERNAL_SERVER_ERROR,
-		message: `Internal Server Error: ${err.message}`,
+		message: err.message,
 	});
 };
