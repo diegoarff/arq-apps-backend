@@ -5,7 +5,7 @@ import { subjectController } from '../controllers/index.js';
 
 const router = Router();
 
-router.use(auth());
+router.use(auth);
 
 router.route('/').get(subjectController.getSubjects);
 

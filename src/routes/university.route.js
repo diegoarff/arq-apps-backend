@@ -13,12 +13,12 @@ router
 	.route('/')
 	.get(universityController.getAllUniversities)
 	.post(
-		auth(),
+		auth,
 		validate(universitySchema),
 		universityController.createUniversity
 	);
 
-router.use(auth());
+router.use(auth);
 
 router
 	.route('/:id')

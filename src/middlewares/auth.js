@@ -1,40 +1,63 @@
-import passport from 'passport';
+import 'dotenv/config.js';
 import httpStatus from 'http-status';
 import ApiError from '../utils/ApiError.js';
-// import allRoles from '../config/roles';
+import catchAsync from '../utils/catchAsync.js';
+import axios from 'axios';
 
-const verifyCallback =
-	(req, resolve, reject, requiredRights) => async (err, user, info) => {
-		if (err || info || !user) {
-			return reject(
-				new ApiError('Please authenticate', httpStatus.UNAUTHORIZED)
-			);
-		}
-		req.user = user;
+const auth = catchAsync(async (req, res, next) => {
+	const authHeader = req.headers.authorization || '';
 
-		// if (requiredRights.length) {
-		//   const userRights = allRoles.get(user.role);
-		//   const hasRequiredRights = requiredRights.every((requiredRight) => userRights.includes(requiredRight));
-		//   if (!hasRequiredRights) {
-		//     return reject(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
-		//   }
-		// }
+	// authentication with Bearer token
+	if (
+		!authHeader.toLowerCase().startsWith('bearer') &&
+		authHeader.split(' ').length !== 2
+	) {
+		throw new ApiError('Invalid bearer token.', httpStatus.BAD_REQUEST);
+	}
 
-		resolve();
-	};
+	const token = authHeader.split(' ')[1]; // Bearer[0] jf8jf8rf9ff4[1]
 
-const auth =
-	(...requiredRights) =>
-	async (req, res, next) => {
-		return new Promise((resolve, reject) => {
-			passport.authenticate(
-				'jwt',
-				{ session: false },
-				verifyCallback(req, resolve, reject, requiredRights)
-			)(req, res, next);
-		})
-			.then(() => next())
-			.catch((err) => next(err));
-	};
+	// se hace la request
+	const ApiURL = process.env.AUTH_SERVER || 'http://localhost:4000';
+	const body = { token };
+	const { data } = await axios.post(ApiURL + '/auth/verify', body);
+	// req.user = payload
+	req.user = data.data;
+	return next();
+});
 
 export default auth;
+
+/*
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣶⣶⣶⣶⣶⣶⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣻⣽⣿⣽⣟⣯⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠿⣷⣿⣻⠿⢿⣻⣿⣽⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣰⣿⣿⣿⣀⣿⣿⣿⣿⣾⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠿⠿⠿⠿⠿⠿⠿⠿⢷⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⢸⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢹⣀⣀⡀⣀⣀⣀⣨⣿⣿⡿⣶⣶⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠉⠁⢁⣿⣿⣿⣀⣀⡀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣷⣿⣻⣿⢿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡏⠉⠈⠉⢹⣿⣻⣿⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣸⣿⠀⠀⢸⣿⣟⣿⣽⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⡿⣿⣿⣤⣤⣼⣯⣿⣯⣿⠇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣄⣄⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣯⣿⢿⣾⢿⡿⣟⣯⣷⣿⣻⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣘⣿⣿⣿⠀⠀⠀⠀⢀⣶⣶⣾⣿⣿⣿⢿⣻⣿⢯⣿⡿⣿⣻⣽⣟⣿⡇
+⢰⣶⣶⣖⣀⣰⣶⣶⣿⣿⡿⣷⣶⣶⣶⣶⣶⣾⡿⣯⣿⢷⣿⣻⡏⢹⣿⣿⡿⣽⣿⣟⣯⣿
+⠸⠿⠿⣿⣿⣿⡏⠿⠿⠀⣿⣿⣷⣿⣏⣿⣹⣾⣿⣿⣹⣿⠉⠉⠁⢸⣿⣿⣿⡿⣷⣿⡿⣷
+⠀⠀⠀⠉⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣾⢿⣟⣷⣿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⠿⣯⣿⣟⣯⣷⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣯⣿⣟⣿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣳⣿⣟⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣻⣷⣿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣽⣷⡿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣽⣾⣿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣯⣷⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣿⣿⣯⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣷⡿⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⣿⣿⣾⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⣿⣟⣷⣿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⣶⣶⣶⣶⣿⣿⣻⣿⡆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠿⠿⠻⠯⠿⠟⠾⠿⠽⠇⠀⠀
+*/

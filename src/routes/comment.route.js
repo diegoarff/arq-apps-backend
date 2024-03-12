@@ -5,7 +5,7 @@ import { updateCommentSchema } from '../validations/comment.validation.js';
 
 const router = Router();
 
-router.use(auth());
+router.use(auth);
 
 router
 	.route('/:id')

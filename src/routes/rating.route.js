@@ -5,7 +5,7 @@ import { ratingController } from '../controllers/index.js';
 // n i g g e r
 const router = Router();
 
-router.use(auth());
+router.use(auth);
 
 router.route('/').post(validate(ratingSchema), ratingController.createRating);
 

@@ -4,7 +4,7 @@ import { teacherController } from '../controllers/index.js';
 
 const router = Router();
 
-router.use(auth());
+router.use(auth);
 
 router
 	.route('/:id')

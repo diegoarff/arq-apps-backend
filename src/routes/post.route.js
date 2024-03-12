@@ -5,7 +5,7 @@ import { postController } from '../controllers/index.js';
 
 const router = Router();
 
-router.use(auth());
+router.use(auth);
 
 // router.route('/').post(validate(postSchema), postController.createPost);
 
