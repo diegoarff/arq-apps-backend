@@ -20,7 +20,7 @@ const auth = catchAsync(async (req, res, next) => {
 	// se hace la request
 	const ApiURL = process.env.AUTH_SERVER || 'http://localhost:4000';
 	const body = { token };
-	const { data } = await axios.post(ApiURL + '/auth/verify', body);
+	const { data } = await axios.post(ApiURL + '/verify', body);
 	// req.user = payload
 	req.user = data.data;
 	return next();
