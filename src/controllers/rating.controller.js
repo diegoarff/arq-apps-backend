@@ -19,7 +19,7 @@ const createRating = catchAsync(async (req, res, next) => {
 	ApiResponse(res, {
 		data: rating,
 		message: httpMessages.CREATE,
-		code: httpStatus.OK,
+		code: httpStatus.CREATED,
 	});
 });
 

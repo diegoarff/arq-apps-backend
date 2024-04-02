@@ -84,7 +84,7 @@ const updateSubjectById = catchAsync(async (req, res) => {
 });
 
 const createPost = catchAsync(async (req, res) => {
-	const userId = req.user._id;
+	const userId = req.user._id || req.user.id;
 	const id = req.params.id;
 
 	const body = {
@@ -98,7 +98,7 @@ const createPost = catchAsync(async (req, res) => {
 	ApiResponse(res, {
 		data: post,
 		message: httpMessages.CREATE,
-		code: httpStatus.OK,
+		code: httpStatus.CREATED,
 	});
 });
 

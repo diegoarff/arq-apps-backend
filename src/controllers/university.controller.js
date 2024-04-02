@@ -79,7 +79,7 @@ const createUniversity = catchAsync(async (req, res, next) => {
 	ApiResponse(res, {
 		data: university,
 		message: httpMessages.CREATE,
-		code: httpStatus.OK,
+		code: httpStatus.CREATED,
 	});
 });
 
@@ -112,7 +112,7 @@ const createTeacher = catchAsync(async (req, res, next) => {
 	ApiResponse(res, {
 		data: teacher,
 		message: httpMessages.CREATE,
-		code: httpStatus.OK,
+		code: httpStatus.CREATED,
 	});
 });
 

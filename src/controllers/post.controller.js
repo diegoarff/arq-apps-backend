@@ -6,23 +6,6 @@ import ApiResponse from '../utils/ApiResponse.js';
 import ApiError from '../utils/ApiError.js';
 import verifyAuth from '../utils/verifyAuth.js';
 
-const createPost = catchAsync(async (req, res) => {
-	const userId = req.user._id;
-
-	const body = {
-		...req.body,
-		user: userId,
-	};
-
-	const post = await postService.createPost(body);
-
-	ApiResponse(res, {
-		data: post,
-		message: httpMessages.CREATE,
-		code: httpStatus.OK,
-	});
-});
-
 const getPosts = catchAsync(async (req, res) => {
 	const posts = await postService.getPosts();
 
@@ -53,7 +36,7 @@ const getPostComments = catchAsync(async (req, res) => {
 const createComment = catchAsync(async (req, res) => {
 	const body = {
 		...req.body,
-		user: req.user._id,
+		user: req.user._id || req.user.id,
 		post: req.params.id,
 	};
 
@@ -62,7 +45,7 @@ const createComment = catchAsync(async (req, res) => {
 	ApiResponse(res, {
 		data: comment,
 		message: httpMessages.CREATE,
-		code: httpStatus.OK,
+		code: httpStatus.CREATED,
 	});
 });
 
@@ -96,7 +79,6 @@ const deletePost = catchAsync(async (req, res) => {
 });
 
 const postController = {
-	createPost,
 	getPosts,
 	getPostComments,
 	createComment,
