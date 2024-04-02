@@ -11,6 +11,7 @@ router.use(auth);
 
 router
 	.route('/:id')
+	.get(postController.getPostById)
 	.put(validate(updatePostSchema), postController.updatePost)
 	.delete(postController.deletePost);
 

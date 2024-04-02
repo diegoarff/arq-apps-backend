@@ -8,13 +8,26 @@ import verifyAuth from '../utils/verifyAuth.js';
 
 const getPosts = catchAsync(async (req, res) => {
 	const posts = await postService.getPosts();
-
 	if (!posts) {
 		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
 	}
 
 	ApiResponse(res, {
 		data: posts,
+		message: httpMessages.FETCH,
+		code: httpStatus.OK,
+	});
+});
+
+const getPostById = catchAsync(async (req, res) => {
+	const post = await postService.getPostById(req.params.id);
+
+	if (!post) {
+		throw new ApiError(httpStatus.NOT_FOUND, httpMessages.NOT_FOUND);
+	}
+
+	ApiResponse(res, {
+		data: post,
 		message: httpMessages.FETCH,
 		code: httpStatus.OK,
 	});
@@ -84,6 +97,7 @@ const postController = {
 	createComment,
 	deletePost,
 	updatePost,
+	getPostById,
 };
 
 export default postController;

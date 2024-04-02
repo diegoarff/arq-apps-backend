@@ -128,6 +128,16 @@ const addTeacherToSubject = catchAsync(async (req, res) => {
 	});
 });
 
+const getTeachersBySubject = catchAsync(async (req, res) => {
+	const subject = await subjectService.getSubjectById(req.params.id);
+
+	ApiResponse(res, {
+		data: subject.teachers,
+		message: httpMessages.FETCH,
+		code: httpStatus.OK,
+	});
+});
+
 const subjectController = {
 	getSubjects,
 	getSubjectById,
@@ -137,6 +147,7 @@ const subjectController = {
 	createPost,
 	getSubjectPosts,
 	addTeacherToSubject,
+	getTeachersBySubject,
 };
 
 export default subjectController;

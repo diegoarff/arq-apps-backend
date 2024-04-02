@@ -20,6 +20,8 @@ router
 	.get(subjectController.getSubjectPosts)
 	.post(validate(postSchema), subjectController.createPost);
 // me gusta la cachapa
+router.route('/:id/teachers').get(subjectController.getTeachersBySubject);
+
 router
 	.route('/:id/teachers/:teacherId')
 	.put(subjectController.addTeacherToSubject);
