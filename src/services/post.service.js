@@ -30,7 +30,7 @@ const getSubjectPosts = async (subjectId) => {
 };
 
 const getPostById = async (postId) => {
-	return await Post.findById(postId);
+	return await Post.findById(postId).populate('user subject');
 };
 
 const updatePost = async (postId, postBody) => {
