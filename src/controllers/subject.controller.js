@@ -1,4 +1,8 @@
-import { subjectService, postService } from '../services/index.js';
+import {
+	subjectService,
+	postService,
+	ratingService,
+} from '../services/index.js';
 import catchAsync from '../utils/catchAsync.js';
 import httpStatus from 'http-status';
 import httpMessages from '../utils/httpMessages.js';
@@ -131,8 +135,17 @@ const addTeacherToSubject = catchAsync(async (req, res) => {
 const getTeachersBySubject = catchAsync(async (req, res) => {
 	const subject = await subjectService.getSubjectById(req.params.id);
 
+	const teachers = [];
+	for (const teacher of subject.teachers) {
+		const averageRating = await ratingService.getTeacherAverageRating(
+			teacher.id,
+			subject.id
+		);
+		teachers.push({ ...teacher.toJSON(), averageRating });
+	}
+
 	ApiResponse(res, {
-		data: subject.teachers,
+		data: teachers,
 		message: httpMessages.FETCH,
 		code: httpStatus.OK,
 	});

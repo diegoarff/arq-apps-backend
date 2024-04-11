@@ -51,10 +51,20 @@ const deleteRating = async (ratingId) => {
 	await rating.deleteOne();
 };
 
+const getTeacherAverageRating = async (teacher, subject) => {
+	const ratings = await Rating.find({ teacher, subject });
+	let sum = 0;
+	for (const rating of ratings) {
+		sum += rating.value;
+	}
+	return sum / ratings.length;
+};
+
 const ratingService = {
 	createRating,
 	updateRating,
 	deleteRating,
+	getTeacherAverageRating,
 };
 
 export default ratingService;
