@@ -32,6 +32,7 @@ const deleteCommentById = catchAsync(async (req, res) => {
 
 	await commentService.deleteCommentById(req.params.id);
 	ApiResponse(res, {
+		data: comment,
 		message: httpMessages.DELETE,
 		code: httpStatus.OK,
 	});
