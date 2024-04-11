@@ -4,13 +4,16 @@ import ApiError from '../utils/ApiError.js';
 import httpMessages from '../utils/httpMessages.js';
 import { subjectService, teacherService } from './index.js';
 
-const createRating = async (ratingBody) => {
+const createRating = async (req) => {
 	/*
         user: "5f5b9e6e5c3e2b2b0c5e3b4a",
         subject: "5f5b9e6e5c3e2b2b0c5e3b4a",
         value: 5,
         teacher: "5f5b9e6e5c3e2b2b0c5e3b4a",
     */
+
+	const ratingBody = req.body;
+	const userId = req.user.id || req.user._id;
 	const subject = await subjectService.getSubjectById(ratingBody.subject);
 	const teacher = await teacherService.getTeacherById(ratingBody.teacher);
 
@@ -26,7 +29,7 @@ const createRating = async (ratingBody) => {
 			httpStatus.BAD_REQUEST
 		);
 
-	const rating = await Rating.create(ratingBody);
+	const rating = await Rating.create({ ...ratingBody, user: userId });
 	return rating;
 };
 

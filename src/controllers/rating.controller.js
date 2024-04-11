@@ -15,7 +15,7 @@ import httpMessages from '../utils/httpMessages.js';
 }) */
 
 const createRating = catchAsync(async (req, res, next) => {
-	const rating = await ratingService.createRating(req.body);
+	const rating = await ratingService.createRating(req);
 	ApiResponse(res, {
 		data: rating,
 		message: httpMessages.CREATE,
