@@ -4,7 +4,9 @@ import ApiError from '../utils/ApiError.js';
 import httpMessages from '../utils/httpMessages.js';
 
 const getTeachersByUniversity = async (universityId) => {
-	return Teacher.find().populate('university').sort({ university: 'asc' });
+	return Teacher.find({ university: universityId })
+		.populate('university')
+		.sort({ university: 'asc' });
 };
 
 const createTeacher = async (teacherBody) => {
