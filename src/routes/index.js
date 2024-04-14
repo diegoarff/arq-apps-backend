@@ -5,6 +5,7 @@ import commentRoutes from './comment.route.js';
 import universityRoutes from './university.route.js';
 import teacherRoutes from './teacher.route.js';
 import ratingRoutes from './rating.route.js';
+import userRoutes from './user.route.js';
 
 const router = Router();
 const defaultRoutes = [
@@ -31,6 +32,10 @@ const defaultRoutes = [
 	{
 		path: '/ratings',
 		route: ratingRoutes,
+	},
+	{
+		path: '/users',
+		route: userRoutes,
 	},
 ];
 

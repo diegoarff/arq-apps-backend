@@ -26,6 +26,10 @@ const userSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: 'University',
 		},
+		banned: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		timestamps: true,
