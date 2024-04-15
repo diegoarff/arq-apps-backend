@@ -49,16 +49,10 @@ const deleteUserById = async (userId) => {
 	return user;
 };
 
-const banUserById = async (user, admin) => {
-	if (user && admin.role === 'admin') {
-		user.banned = !user.banned;
-		await user.save();
-		return user;
-	} else if (!user) {
-		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
-	} else if (user && admin.role !== 'admin') {
-		throw new ApiError(httpMessages.CANNOT_MODIFY, httpStatus.UNAUTHORIZED);
-	}
+const banUserById = async (user) => {
+	user.banned = !user.banned;
+	await user.save();
+	return user;
 };
 
 const userService = {

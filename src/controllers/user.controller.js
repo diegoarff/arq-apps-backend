@@ -15,15 +15,18 @@ const updateUserById = catchAsync(async (req, res, next) => {
 });
 
 const banUserById = catchAsync(async (req, res, next) => {
-	const admin = await userService.getUserById(req.params.admin);
+	const admin = req.user;
 	const user = await userService.getUserById(req.params.user);
 	if (!admin || !user) {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
-	const bannedUser = await userService.banUserById(user, admin);
+	if (admin.role !== 'admin') {
+		throw new ApiError(httpMessages.CANNOT_MODIFY, httpStatus.UNAUTHORIZED);
+	}
+	const bannedUser = await userService.banUserById(user);
 	ApiResponse(res, {
 		data: bannedUser,
-		message: httpMessages.BAN,
+		message: bannedUser.banned ? httpMessages.BAN : httpMessages.UNBANNED,
 		code: httpStatus.OK,
 	});
 });

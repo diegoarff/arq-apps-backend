@@ -10,6 +10,7 @@ const httpMessages = {
 	ALREADY_EXISTS: 'Resource already exists.',
 	INVALID_AUTH: 'Token invalid. Please, authenticate.',
 	BAN: 'User banned.',
+	UNBANNED: 'User unbanned.',
 };
 
 export default httpMessages;

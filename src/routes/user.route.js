@@ -7,6 +7,6 @@ router.use(auth);
 
 router.route('/:id').put(userController.updateUserById);
 
-router.route('/ban/:admin/:user').put(userController.banUserById);
+router.route('/ban/:user').put(userController.banUserById);
 
 export default router;
