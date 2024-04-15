@@ -6,7 +6,7 @@ import httpMessages from '../utils/httpMessages.js';
 import httpStatus from 'http-status';
 
 const updateUserById = catchAsync(async (req, res, next) => {
-	const user = await userService.updateUserById(req.params.id, req.body);
+	const user = await userService.updateUserById(req.user.id, req.body);
 	ApiResponse(res, {
 		data: user,
 		message: httpMessages.UPDATE,

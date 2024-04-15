@@ -5,7 +5,7 @@ const router = Router();
 
 router.use(auth);
 
-router.route('/:id').put(userController.updateUserById);
+router.route('/').put(userController.updateUserById);
 
 router.route('/ban/:user').put(userController.banUserById);
 

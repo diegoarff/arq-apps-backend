@@ -33,8 +33,6 @@ const updateUserById = async (userId, updateBody) => {
 			throw new ApiError('Username already taken', httpStatus.BAD_REQUEST);
 		}
 		Object.assign(user, updateBody);
-		console.log(user);
-		console.log(updateBody);
 		await user.save();
 		return user;
 	}
