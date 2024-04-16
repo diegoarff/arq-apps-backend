@@ -81,9 +81,24 @@ const deletePost = catchAsync(async (req, res) => {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 
-	verifyAuth(req, post.user);
+	verifyAuth(req, post.user._id);
 
 	await postService.deletePost(req.params.id);
+
+	ApiResponse(res, {
+		message: httpMessages.DELETE,
+		code: httpStatus.OK,
+	});
+});
+
+const deleteByAdmin = catchAsync(async (req, res) => {
+	const post = await postService.getPostById(req.params.id);
+
+	if (!post) throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+	if (req.user.role !== 'admin')
+		throw new ApiError(httpMessages.CANNOT_MODIFY, httpStatus.UNAUTHORIZED);
+
+	await postService.deleteByAdmin(req.params.id);
 
 	ApiResponse(res, {
 		message: httpMessages.DELETE,
@@ -98,6 +113,7 @@ const postController = {
 	deletePost,
 	updatePost,
 	getPostById,
+	deleteByAdmin,
 };
 
 export default postController;

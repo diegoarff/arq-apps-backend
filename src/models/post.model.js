@@ -30,6 +30,10 @@ const postSchema = new Schema(
 			ref: 'Subject',
 			required: true,
 		},
+		deleted: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		timestamps: true,

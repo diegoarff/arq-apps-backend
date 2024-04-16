@@ -1,4 +1,4 @@
-import { Post } from '../models/index.js';
+import { Post, Comment } from '../models/index.js';
 import httpMessages from '../utils/httpMessages.js';
 import httpStatus from 'http-status';
 import ApiError from '../utils/ApiError.js';
@@ -49,6 +49,16 @@ const deletePost = async (postId) => {
 		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
 	}
 	await post.deleteOne();
+	await Comment.deleteMany({ post: postId });
+};
+
+const deleteByAdmin = async (postId) => {
+	const post = await getPostById(postId);
+	if (!post) {
+		throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+	}
+	post.deleted = !post.deleted;
+	await post.save();
 };
 
 const postService = {
@@ -58,6 +68,7 @@ const postService = {
 	getPostById,
 	deletePost,
 	updatePost,
+	deleteByAdmin,
 };
 
 export default postService;

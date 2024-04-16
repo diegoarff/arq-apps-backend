@@ -15,6 +15,8 @@ router
 	.put(validate(updatePostSchema), postController.updatePost)
 	.delete(postController.deletePost);
 
+router.route('/admin/:id').delete(postController.deleteByAdmin);
+
 router
 	.route('/:id/comments')
 	.get(postController.getPostComments)
