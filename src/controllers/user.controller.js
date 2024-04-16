@@ -31,9 +31,22 @@ const banUserById = catchAsync(async (req, res, next) => {
 	});
 });
 
+const getUserWithNumberOfPost = catchAsync(async (req, res, next) => {
+	const user = await userService.getUserById(req.params.user);
+	if (!user) throw new ApiError(httpMessages.NOT_FOUND, httpStatus.NOT_FOUND);
+
+	const query = await userService.getUserWithNumberOfPost(user);
+	ApiResponse(res, {
+		data: query,
+		message: httpMessages.GET,
+		code: httpStatus.OK,
+	});
+});
+
 const userController = {
 	updateUserById,
 	banUserById,
+	getUserWithNumberOfPost,
 };
 
 export default userController;

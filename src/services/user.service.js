@@ -53,6 +53,32 @@ const banUserById = async (user) => {
 	return user;
 };
 
+const getUserWithNumberOfPost = async (user) => {
+	const query = await User.aggregate([
+		{ $match: { _id: user._id } },
+		{
+			$lookup: {
+				from: 'posts',
+				localField: '_id',
+				foreignField: 'user',
+				as: 'posts',
+			},
+		},
+		{
+			$addFields: {
+				numberOfPosts: { $size: '$posts' },
+			},
+		},
+		{
+			$project: {
+				posts: 0,
+				password: 0,
+			},
+		},
+	]);
+	return query;
+};
+
 const userService = {
 	createUser,
 	queryUsers,
@@ -61,6 +87,7 @@ const userService = {
 	deleteUserById,
 	updateUserById,
 	banUserById,
+	getUserWithNumberOfPost,
 };
 
 export default userService;
